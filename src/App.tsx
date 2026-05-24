@@ -161,6 +161,7 @@ function App() {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
   const [dismissedSocialPrompt, setDismissedSocialPrompt] = useState(readSocialPromptState);
+  const [librarySource, setLibrarySource] = useState<'local' | 'fallback' | 'supabase' | null>(null);
   const [categoryForm, setCategoryForm] = useState<CategoryFormState>(emptyCategoryForm);
   const [promptForm, setPromptForm] = useState<PromptFormState>(emptyPromptForm);
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
@@ -178,6 +179,7 @@ function App() {
     setCategories(result.categories);
     setPrompts(result.prompts);
     setError(result.error);
+    setLibrarySource(result.source);
     setLoading(false);
   }
 
@@ -829,6 +831,21 @@ function App() {
 
   return (
     <div className="min-h-screen text-ink">
+      {librarySource !== null && librarySource !== 'supabase' && (
+        <div className="border-b border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-900 sm:px-6 lg:px-8">
+          {librarySource === 'local' ? (
+            <p>
+              الموقع غير متصل بقاعدة بيانات Supabase حالياً. التعديلات تحفظ فقط على هذا المتصفح.
+              تأكد من إعداد المتغيرين <code>VITE_SUPABASE_URL</code> و <code>VITE_SUPABASE_ANON_KEY</code> في بيئة النشر.
+            </p>
+          ) : (
+            <p>
+              تعذر جلب البيانات من Supabase، لذلك يتم عرض بيانات بديلة محلياً. التعديلات الحالية لا تتزامن مع قاعدة البيانات.
+            </p>
+          )}
+        </div>
+      )}
+
       {!dismissedSocialPrompt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(33,27,22,0.42)] px-4">
           <div className="relative w-full max-w-lg rounded-[34px] border border-white/70 bg-[#fffaf2] p-7 shadow-[0_28px_70px_rgba(38,30,22,0.22)]">
@@ -849,9 +866,7 @@ function App() {
               <h2 className="text-2xl font-semibold leading-10">
                 تابعني على تيليجرام وإنستغرام ولينكدإن
               </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                لتصلك آخر الأخبار والأدوات والتحديثات الجديدة أولاً بأول.
-              </p>
+              
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
@@ -887,8 +902,7 @@ function App() {
         <div className="border-b border-bronze/10 bg-[linear-gradient(90deg,rgba(126,92,54,0.08),rgba(255,255,255,0.55),rgba(109,129,94,0.12))]">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-3 px-4 py-2 text-center text-sm text-slate-700 sm:px-6 lg:px-8">
             <span className="font-medium">
-              تابعني على تيليجرام وإنستغرام ولينكدإن لتصلك آخر الأخبار والأدوات والتحديثات.
-            </span>
+              تابعني على تيليجرام وإنستغرام ولينكدإن  </span>
             <div className="flex items-center gap-2">
               {socialLinks.map(({ name, href, icon: Icon }) => (
                 <a
@@ -914,9 +928,8 @@ function App() {
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
             <a href="#top" className="flex items-center gap-3 text-lg font-semibold tracking-tight text-ink hover:opacity-80 transition">
-              <img src="/favicon.png" alt="Prompty Logo" className="h-20 w-24 rounded-lg" />
-              مكتبة البرومبتات العربية
-            </a>
+              <img src="/favicon.png" alt="Prompty Logo" className="h-24 w-24 rounded-lg" />
+مكتبة البرومتات             </a>
           </div>
 
           <nav className="scrollbar-none flex items-center gap-2 overflow-x-auto pb-1">
@@ -940,11 +953,10 @@ function App() {
           <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-12 pt-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:pb-16 lg:pt-16">
             <div className="space-y-6">
               <span className="inline-flex rounded-full border border-bronze/20 bg-white/80 px-4 py-2 text-sm font-medium text-bronze">
-                أرشيف عربي جاهز للنسخ والاستخدام
-              </span>
+دع الذكاء الاصطناعي يفهم ماتريد من تجارب غيرك              </span>
               <div className="space-y-4">
                 <h1 className="max-w-3xl text-4xl font-semibold leading-[1.35] text-ink sm:text-5xl lg:text-6xl">
-                  اكتشف برومبتات عربية عملية للكتابة والبرمجة والتعليم والأعمال
+                  اكتشف برومبتات عملية للكتابة والبرمجة والتعليم والأعمال
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
                   مكتبة عربية مصممة لتكون مرجعك السريع للبرومبتات الاحترافية. ابحث، صفِّ، وانسخ

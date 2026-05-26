@@ -41,17 +41,17 @@ const SOCIAL_PROMPT_KEY = 'prompty-social-prompt-dismissed';
 const socialLinks = [
   {
     name: 'Telegram',
-    href: 'https://telegram.com',
+    href: 'https://t.me/tnmi0',
     icon: Send,
   },
   {
     name: 'Instagram',
-    href: 'https://instagram.com',
+    href: 'https://www.instagram.com/1tsin?igsh=MXZoNXRhZWNmOGV6Zg==',
     icon: Instagram,
   },
   {
     name: 'LinkedIn',
-    href: 'https://linkedin.com',
+    href: 'https://www.linkedin.com/in/tahseen-mahdi-018617395?utm_source=share_via&utm_content=profile&utm_medium=member_android',
     icon: Linkedin,
   },
 ] as const;
